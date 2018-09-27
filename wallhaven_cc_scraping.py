@@ -11,9 +11,7 @@ for i in range(1,8):
     m_url = url + str(i)
     driver.get(m_url)
     
-    # html_doc = request.urlopen(m_url)
     soup = BeautifulSoup(driver.page_source, 'lxml')
-    # print(soup)
 
     figures = soup.find_all('figure', class_ = 'thumb-sfw')
 
@@ -24,8 +22,6 @@ for i in range(1,8):
         except:
             continue
 
-
-# print(links)
 
 img_link = []
 
@@ -39,8 +35,6 @@ for link in links:
     except:
         continue
 
-for img in img_link:
-    print(img)
 
 num = 1
 for img in img_link:
