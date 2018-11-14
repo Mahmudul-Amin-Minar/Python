@@ -22,11 +22,19 @@ def color_generator(elev):
 map = folium.Map(location=[38.58, -99.89], zoom_start=6, tiles='Mapbox Bright')
 
 # create a feature group for adding different functionality
-fg = folium.FeatureGroup("My app")
+fg_volcanoes = folium.FeatureGroup("Volcanoes")
 
 for lt, ln, el in zip(lat, lon, elev):
-    fg.add_child(folium.CircleMarker(location=[lt, ln], radius=6, popup=str(el), fill_color=color_generator(el), color='grey', fill_opacity=0.7))
+    fg_volcanoes.add_child(folium.CircleMarker(location=[lt, ln], radius=6, popup=str(el), fill_color=color_generator(el), color='grey', fill_opacity=0.7))
+
 # add GeoJson data to the map
-fg.add_child(folium.GeoJson(data=open('world.json', 'r', encoding='utf-8-sig').read()))
-map.add_child(fg)
+fg_population = folium.FeatureGroup('Population')
+fg_population.add_child(folium.GeoJson(data=open('world.json', 'r', encoding='utf-8-sig').read(), style_function=lambda x: {'fillColor':'green' if x['properties']['POP2005'] < 10000000 else 'orange'
+ if 10000000 <= x['properties']['POP2005'] < 20000000 else 'red'}))
+
+
+map.add_child(fg_volcanoes)
+map.add_child(fg_population)
+# adding Layer Control
+map.add_child(folium.LayerControl())
 map.save("Map1.html")
